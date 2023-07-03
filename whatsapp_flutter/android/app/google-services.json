@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:618226115239:android:34ef7d9034a8b01c813182",
+        "mobilesdk_app_id": "1:618226115239:android:4a6d8f8399d7c957813182",
         "android_client_info": {
-          "package_name": "com.example.whatsapp_flutter"
+          "package_name": "com.rdsoftware.whatschat"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "618226115239-jpl9cq0jflpkag18lgcgaorhh2r05665.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "618226115239-39jb0gj76o1hecv60q14sb344hnce2h1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.whatsappFlutter"
+              }
             }
           ]
         }
