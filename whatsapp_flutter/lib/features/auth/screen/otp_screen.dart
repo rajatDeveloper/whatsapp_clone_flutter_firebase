@@ -31,35 +31,37 @@ class OTPScreen extends ConsumerWidget {
         title: const Text("Verify your OTP"),
       ),
       body: Center(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "Enter the OTP sent to your number",
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(
-              width: size.width * 0.5,
-              child: TextField(
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: "- - - - - -",
-                  hintStyle: TextStyle(
-                    fontSize: 30,
-                  ),
-                ),
-                keyboardAppearance: Brightness.dark,
-                onChanged: (val) {
-                  if (val.length == 6) {
-                    verfiyOTP(context, val.trim(), ref);
-                  }
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-            )
-          ],
+              const Text(
+                "Enter the OTP sent to your number",
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(
+                width: size.width * 0.5,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    hintText: "- - - - - -",
+                    hintStyle: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                  keyboardAppearance: Brightness.dark,
+                  onChanged: (val) {
+                    if (val.length == 6) {
+                      verfiyOTP(context, val.trim(), ref);
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

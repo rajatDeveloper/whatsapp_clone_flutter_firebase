@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +61,16 @@ class AuthRepo {
           context, UserInfoScreen.routeName, (route) => false);
     } catch (e) {
       showSnakBar(context: context, message: e.toString());
+    }
+  }
+
+  void saveUserDataToFirebase(
+      {required String name,
+      required File? profileImage,
+      required ProviderRef ref,
+      required BuildContext context}) async {
+    try {} catch (e) {
+      
     }
   }
 }
