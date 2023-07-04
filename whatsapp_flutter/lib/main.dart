@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
 import 'package:whatsapp_flutter/features/landing/screen/landing_screen.dart';
 import 'package:whatsapp_flutter/firebase_options.dart';
@@ -11,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,4 +42,4 @@ class MyApp extends StatelessWidget {
 }
 
 
-// 50
+// 1: 53 
