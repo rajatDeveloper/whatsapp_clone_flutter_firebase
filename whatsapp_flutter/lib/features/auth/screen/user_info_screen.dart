@@ -1,18 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/utils/functions.dart';
 import 'package:whatsapp_flutter/utils/utils.dart';
 
-class UserInfoScreen extends StatefulWidget {
+class UserInfoScreen extends ConsumerStatefulWidget {
   const UserInfoScreen({super.key});
   static const String routeName = "/user-info-screen";
 
   @override
-  State<UserInfoScreen> createState() => _UserInfoScreenState();
+  ConsumerState<UserInfoScreen> createState() => _UserInfoScreenState();
 }
 
-class _UserInfoScreenState extends State<UserInfoScreen> {
+class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -30,6 +32,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       setState(() {
         Image = image;
       });
+    }
+  }
+
+  void storeUserData() async {
+    String name = _nameController.text.trim();
+    if (name.isNotEmpty) {
+      ref
+          .read(authControllerProvider)
+          .saveDataToFireBase(context: context, name: name, profilePic: Image!);
     }
   }
 
@@ -80,7 +91,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    storeUserData();
+                  },
                   icon: Icon(Icons.done),
                 )
               ],
