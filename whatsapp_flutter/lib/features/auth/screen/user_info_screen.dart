@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -36,11 +37,13 @@ class _UserInfoScreenState extends ConsumerState<UserInfoScreen> {
   }
 
   void storeUserData() async {
+    log("storeUserData");
     String name = _nameController.text.trim();
     if (name.isNotEmpty) {
-      ref
-          .read(authControllerProvider)
-          .saveDataToFireBase(context: context, name: name, profilePic: Image!);
+      ref.read(authControllerProvider).saveDataToFireBase(
+          context: context,
+          name: name,
+          profilePic: Image == null ? null : Image!);
     }
   }
 

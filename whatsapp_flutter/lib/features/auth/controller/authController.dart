@@ -3,9 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/features/auth/repository/auth_repo.dart';
+import 'package:whatsapp_flutter/models/userModel.dart';
 
 final authControllerProvider = Provider(
     (ref) => AuthController(authRepo: ref.watch(authRepoProvider), ref: ref));
+
+final UserDataAuthProvier = FutureProvider((ref) {
+  final authController = ref.watch(authControllerProvider);
+  return authController.getUserData();
+}); 
 
 class AuthController {
   final AuthRepo authRepo;
@@ -44,5 +50,9 @@ class AuthController {
       required File? profilePic}) {
     authRepo.saveUserDataToFirebase(
         name: name, profileImage: profilePic, ref: ref, context: context);
+  }
+
+  Future<UserModel?> getUserData() async {
+    return await authRepo.getCurrentUserData();
   }
 }

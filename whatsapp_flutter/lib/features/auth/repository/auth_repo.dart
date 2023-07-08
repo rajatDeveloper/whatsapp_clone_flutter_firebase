@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,7 +95,7 @@ class AuthRepo {
             groupId: []);
 
         await firestore.collection("users").doc(uid).set(user.toMap());
-
+        log("data");
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MobileLayoutScreen()),
@@ -103,5 +104,17 @@ class AuthRepo {
     } catch (e) {
       showSnakBar(context: context, message: e.toString());
     }
+  }
+
+  //save logined user data to local phn storage
+  Future<UserModel> getCurrentUserData() async {
+    var userData =
+        await firestore.collection("users").doc(auth.currentUser?.uid).get();
+    UserModel? user;
+    if (userData.data() != null) {
+      user = UserModel.fromMap(userData.data()!);
+    }
+
+    return user!;
   }
 }

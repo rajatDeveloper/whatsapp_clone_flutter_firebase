@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "618226115239-g7f81vm8bi381fka7vnnlap046dlujok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rdsoftware.whatschat",
+            "certificate_hash": "1c48426080990db339b37c860155a925e6a13e37"
+          }
+        },
+        {
           "client_id": "618226115239-jpl9cq0jflpkag18lgcgaorhh2r05665.apps.googleusercontent.com",
           "client_type": 3
         }

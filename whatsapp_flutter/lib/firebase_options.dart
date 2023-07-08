@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '618226115239',
     projectId: 'whatsapp-backend-2adca',
     storageBucket: 'whatsapp-backend-2adca.appspot.com',
+    androidClientId: '618226115239-g7f81vm8bi381fka7vnnlap046dlujok.apps.googleusercontent.com',
     iosClientId: '618226115239-s3p1t0jk2lkjta1cqa33l1he0qhujebh.apps.googleusercontent.com',
     iosBundleId: 'com.rdsoftware.whatschat',
   );

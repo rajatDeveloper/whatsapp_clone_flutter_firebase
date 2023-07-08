@@ -2,8 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
+import 'package:whatsapp_flutter/common/widgets/error.dart';
+import 'package:whatsapp_flutter/common/widgets/loder.dart';
+import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/landing/screen/landing_screen.dart';
 import 'package:whatsapp_flutter/firebase_options.dart';
+import 'package:whatsapp_flutter/screens/mobile_layout_screen.dart';
 
 import 'package:whatsapp_flutter/utils/router.dart';
 
@@ -15,11 +19,11 @@ void main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Whatsapp UI',
@@ -32,15 +36,24 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: backgroundColor,
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: LandingScreen()
-        //  const ResponsiveLayout(
-        //   mobileScreenLayout: MobileLayoutScreen(),
-        //   webScreenLayout: WebLayoutScreen(),
-        // ),
-        );
+        home: ref.watch(UserDataAuthProvier).when(
+            data: (user) {
+              if (user == null) {
+                return const LandingScreen();
+              } else {
+                return const MobileLayoutScreen();
+              }
+            },
+            loading: () => const Loder(),
+            error: (e, s) => ErrorScreen(error: e.toString())
+            //  const ResponsiveLayout(
+            //   mobileScreenLayout: MobileLayoutScreen(),
+            //   webScreenLayout: WebLayoutScreen(),
+            // ),
+            ));
   }
 }
 
 
-// 2: 31
+// 2: 47
 //8484848484 - otp -123456  

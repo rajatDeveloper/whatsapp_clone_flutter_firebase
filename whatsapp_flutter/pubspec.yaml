@@ -41,6 +41,7 @@ dependencies:
   country_picker: ^2.0.20
   flutter_riverpod: ^2.3.6
   image_picker: ^1.0.0
+  flutter_contacts: ^1.1.6
 
 dev_dependencies:
   flutter_test:
