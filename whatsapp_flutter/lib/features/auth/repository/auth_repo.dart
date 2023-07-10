@@ -107,7 +107,7 @@ class AuthRepo {
   }
 
   //save logined user data to local phn storage
-  Future<UserModel> getCurrentUserData() async {
+  Future<UserModel?> getCurrentUserData() async {
     var userData =
         await firestore.collection("users").doc(auth.currentUser?.uid).get();
     UserModel? user;
@@ -115,6 +115,14 @@ class AuthRepo {
       user = UserModel.fromMap(userData.data()!);
     }
 
-    return user!;
+    return user;
+  }
+
+  Stream<UserModel> userData(String ueserId) {
+    return firestore
+        .collection("users")
+        .doc(ueserId)
+        .snapshots()
+        .map((event) => UserModel.fromMap(event.data()!));
   }
 }
