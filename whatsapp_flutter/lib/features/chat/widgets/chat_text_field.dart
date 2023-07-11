@@ -19,19 +19,24 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
   bool isShowSendBtn = false;
   final TextEditingController _messageController = TextEditingController();
 
+  void sendTextMessage() async {
+    if (isShowSendBtn) {
+      ref.read(chatControllerProvider).sendTextMessage(
+            context: context,
+            text: _messageController.text,
+            recieverUserId: widget.recieverUserId,
+          );
+      setState(() {
+        _messageController.text = '';
+      });
+    }
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _messageController.dispose();
-  }
-
-  void sendTextMessage() async {
-    if (isShowSendBtn) {
-      setState(() {
-        _messageController.text = '';
-      });
-    }
   }
 
   @override

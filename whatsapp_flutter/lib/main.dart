@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
+import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/common/widgets/error.dart';
 import 'package:whatsapp_flutter/common/widgets/loder.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
@@ -41,6 +42,7 @@ class MyApp extends ConsumerWidget {
               if (user == null) {
                 return const LandingScreen();
               } else {
+                MyData.currentUserData = user;
                 return const MobileLayoutScreen();
               }
             },
@@ -55,5 +57,5 @@ class MyApp extends ConsumerWidget {
 }
 
 
-// 4:11
+// 4:44 
 //8484848484 - otp -123456  
