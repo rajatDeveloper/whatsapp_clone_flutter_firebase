@@ -156,4 +156,20 @@ class ChatRepo {
       }).toList();
     });
   }
+
+  Stream<List<Message>> getChatStream({required String recieverUserId}) {
+    return firestore
+        .collection('users')
+        .doc(MyData.currentUserData!.uid)
+        .collection('chats')
+        .doc(recieverUserId)
+        .collection('messages')
+        .orderBy('timeSent', descending: false)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Message.fromMap(doc.data());
+      }).toList();
+    });
+  }
 }

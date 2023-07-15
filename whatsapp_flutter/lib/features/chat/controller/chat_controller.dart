@@ -6,6 +6,7 @@ import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/chat/repo/chat_repo.dart';
 import 'package:whatsapp_flutter/models/chat_contact.dart';
+import 'package:whatsapp_flutter/models/message.dart';
 import 'package:whatsapp_flutter/models/userModel.dart';
 
 final chatControllerProvider = Provider.autoDispose(
@@ -38,5 +39,11 @@ class ChatController {
 
   Stream<List<ChatContact>> getChatContacts() {
     return chatRepo.getChatList();
+  }
+
+  Stream<List<Message>> getChatStream({
+    required String recieverUserId,
+  }) {
+    return chatRepo.getChatStream(recieverUserId: recieverUserId);
   }
 }

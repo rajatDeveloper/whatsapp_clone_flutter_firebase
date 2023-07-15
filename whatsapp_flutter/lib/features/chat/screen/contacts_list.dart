@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:whatsapp_flutter/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_flutter/info.dart';
 import 'package:whatsapp_flutter/features/chat/screen/mobile_chat_screen.dart';
@@ -16,6 +17,16 @@ class ContactsList extends ConsumerWidget {
       child: StreamBuilder<List<ChatContact>>(
           stream: ref.watch(chatControllerProvider).getChatContacts(),
           builder: (context, snapchat) {
+            if (snapchat.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapchat.hasError) {
+              return const Center(
+                child: Text('Server Error'),
+              );
+            }
             return ListView.builder(
               shrinkWrap: true,
               itemCount: snapchat.data?.length ?? 0,
@@ -57,7 +68,7 @@ class ContactsList extends ConsumerWidget {
                             radius: 30,
                           ),
                           trailing: Text(
-                            info[index]['time'].toString(),
+                            DateFormat.Hm().format(data.timeSent),
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 13,

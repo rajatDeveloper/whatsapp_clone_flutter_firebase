@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/colors.dart';
 
-
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({
     Key? key,
@@ -46,7 +45,7 @@ class SenderMessageCard extends StatelessWidget {
                 child: Text(
                   date,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 8,
                     color: Colors.grey[600],
                   ),
                 ),
