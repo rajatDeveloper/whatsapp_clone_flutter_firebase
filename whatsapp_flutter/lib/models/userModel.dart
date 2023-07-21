@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class UserModel {
   final String name;
-  final String uid;
+  late final String uid;
   final String profilePic;
   final bool isOnline;
   final String phoneNumber;

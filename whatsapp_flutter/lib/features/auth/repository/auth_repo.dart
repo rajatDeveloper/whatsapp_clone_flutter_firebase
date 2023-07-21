@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/common/repositories/common_firebase_storage_repository.dart';
+import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/features/auth/screen/otp_screen.dart';
 import 'package:whatsapp_flutter/features/auth/screen/user_info_screen.dart';
 import 'package:whatsapp_flutter/models/userModel.dart';
@@ -58,7 +59,7 @@ class AuthRepo {
     required BuildContext context,
   }) async {
     try {
-      await auth.signInWithCredential(PhoneAuthProvider.credential(
+      var data = await auth.signInWithCredential(PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: smsCode));
 
       Navigator.pushNamedAndRemoveUntil(
@@ -124,5 +125,12 @@ class AuthRepo {
         .doc(ueserId)
         .snapshots()
         .map((event) => UserModel.fromMap(event.data()!));
+  }
+
+  void setUserState(bool isOnline) async {
+    await firestore
+        .collection("users")
+        .doc(auth.currentUser?.uid)
+        .update({'isOnline': isOnline});
   }
 }

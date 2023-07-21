@@ -147,7 +147,7 @@ class ChatRepo {
   Stream<List<ChatContact>> getChatList() {
     return firestore
         .collection('users')
-        .doc(MyData.currentUserData!.uid)
+        .doc(auth.currentUser!.uid)
         .collection('chats')
         .snapshots()
         .map((snapshot) {
@@ -160,7 +160,7 @@ class ChatRepo {
   Stream<List<Message>> getChatStream({required String recieverUserId}) {
     return firestore
         .collection('users')
-        .doc(MyData.currentUserData!.uid)
+        .doc(auth.currentUser!.uid)
         .collection('chats')
         .doc(recieverUserId)
         .collection('messages')
