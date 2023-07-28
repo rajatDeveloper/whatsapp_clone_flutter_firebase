@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
+import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_flutter/features/chat/screen/contacts_list.dart';
 
@@ -13,13 +14,30 @@ class MobileLayoutScreen extends ConsumerStatefulWidget {
 
 class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
     with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
-    if(state == AppLifecycleState.resumed){
-      
+    if (state == AppLifecycleState.resumed ||
+        state == AppLifecycleState.detached ||
+        state == AppLifecycleState.paused) {
+      ref.read(authControllerProvider).setUserState(true);
+    } else if (state == AppLifecycleState.inactive) {
+      ref.read(authControllerProvider).setUserState(false);
     }
   }
 

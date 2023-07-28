@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -171,5 +172,21 @@ class ChatRepo {
         return Message.fromMap(doc.data());
       }).toList();
     });
+  }
+
+  void sendFileMessage({
+    required BuildContext context,
+    required File file , 
+    required String recieverUserId,
+    required UserModel senderUserData,
+    required ProviderRef ref, // can call fireatire provider functions 
+    required MessageEnum messageType,
+    
+  }) async {
+    try {
+
+    } catch (e) {
+      showSnakBar(context: context, message: e.toString());
+    }
   }
 }
