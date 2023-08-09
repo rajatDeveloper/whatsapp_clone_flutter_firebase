@@ -32,11 +32,11 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed ||
+    if (state == AppLifecycleState.resumed) {
+      ref.read(authControllerProvider).setUserState(true);
+    } else if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.detached ||
         state == AppLifecycleState.paused) {
-      ref.read(authControllerProvider).setUserState(true);
-    } else if (state == AppLifecycleState.inactive) {
       ref.read(authControllerProvider).setUserState(false);
     }
   }
