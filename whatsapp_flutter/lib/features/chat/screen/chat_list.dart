@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/features/chat/controller/chat_controller.dart';
+import 'package:whatsapp_flutter/features/chat/widgets/my_message_card.dart';
+import 'package:whatsapp_flutter/features/chat/widgets/sender_message_card.dart';
 import 'package:whatsapp_flutter/info.dart';
 import 'package:whatsapp_flutter/models/message.dart';
-import 'package:whatsapp_flutter/widgets/my_message_card.dart';
-import 'package:whatsapp_flutter/widgets/sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;
@@ -57,11 +57,13 @@ class _ChatListState extends ConsumerState<ChatList> {
               var timeSent = DateFormat.Hm().format(messageData.timeSent);
               if (messageData.senderId == MyData.currentUserData!.uid) {
                 return MyMessageCard(
+                  messageType: messageData.type,
                   message: messageData.text,
                   date: timeSent,
                 );
               }
               return SenderMessageCard(
+                messageType: messageData.type,
                 message: messageData.text,
                 date: timeSent,
               );

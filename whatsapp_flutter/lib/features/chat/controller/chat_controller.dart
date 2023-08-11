@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
 import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/chat/repo/chat_repo.dart';
@@ -45,5 +47,20 @@ class ChatController {
     required String recieverUserId,
   }) {
     return chatRepo.getChatStream(recieverUserId: recieverUserId);
+  }
+
+  void sendFileMessage({
+    required BuildContext context,
+    required String recieverUserId,
+    required MessageEnum messageType,
+    required File file,
+  }) async {
+    chatRepo.sendFileMessage(
+        context: context,
+        file: file,
+        recieverUserId: recieverUserId,
+        senderUserData: MyData.currentUserData!,
+        ref: ref,
+        messageType: messageType);
   }
 }

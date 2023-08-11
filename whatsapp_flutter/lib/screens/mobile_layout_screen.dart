@@ -31,6 +31,8 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
+    //to update the online and offline 
+    
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       ref.read(authControllerProvider).setUserState(true);

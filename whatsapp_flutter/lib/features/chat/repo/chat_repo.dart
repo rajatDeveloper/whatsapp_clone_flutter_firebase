@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
+import 'package:whatsapp_flutter/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/models/chat_contact.dart';
 import 'package:whatsapp_flutter/models/message.dart';
@@ -174,17 +175,65 @@ class ChatRepo {
     });
   }
 
+
   void sendFileMessage({
     required BuildContext context,
-    required File file , 
+    required File file,
     required String recieverUserId,
     required UserModel senderUserData,
-    required ProviderRef ref, // can call fireatire provider functions 
+    required ProviderRef ref, // can call fireatire provider functions
     required MessageEnum messageType,
-    
   }) async {
     try {
+      var timeSent = DateTime.now();
+      var messageId = const Uuid().v1();
 
+      String imageUrl = await ref
+          .read(commonFirebaseStorageRepositoryProvider)
+          .storeFileToFirebase(
+              'chat//${messageType.type}/${senderUserData.uid}/$recieverUserId/$messageId',
+              file);
+
+      UserModel recieverUserData;
+      var userDataMap =
+          await firestore.collection('users').doc(recieverUserId).get();
+
+      recieverUserData = UserModel.fromMap(userDataMap.data()!);
+
+      String contactMsg;
+      switch (messageType) {
+        case MessageEnum.image:
+          contactMsg = "Image";
+          break;
+        case MessageEnum.video:
+          contactMsg = "Video";
+          break;
+        case MessageEnum.audio:
+          contactMsg = "Audio";
+          break;
+        case MessageEnum.gif:
+          contactMsg = "Gif";
+          break;
+
+        default:
+          contactMsg = "File";
+      }
+
+      _saveDataToContactSubCollection(
+          senderUserData: senderUserData,
+          recieverUserData: recieverUserData,
+          text: contactMsg,
+          timesent: timeSent,
+          recieverUserId: recieverUserId);
+
+      _saveMessageToMessageSubCollection(
+          recieverUserId: recieverUserId,
+          text: imageUrl,
+          timesent: timeSent,
+          messageId: messageId,
+          recieverUsername: recieverUserData.name,
+          username: senderUserData.name,
+          messageType: messageType);
     } catch (e) {
       showSnakBar(context: context, message: e.toString());
     }

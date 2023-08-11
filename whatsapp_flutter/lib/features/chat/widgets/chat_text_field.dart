@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
+import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
 import 'package:whatsapp_flutter/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_flutter/utils/functions.dart';
+import 'package:whatsapp_flutter/utils/utils.dart';
 
 class ChatTextField extends ConsumerStatefulWidget {
   final String recieverUserId;
@@ -29,6 +33,29 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
       setState(() {
         _messageController.text = '';
       });
+    }
+  }
+
+  void selectFile({
+    required File file,
+    required MessageEnum messageType,
+  }) async {
+    ref.read(chatControllerProvider).sendFileMessage(
+        context: context,
+        recieverUserId: widget.recieverUserId,
+        messageType: MessageEnum.image,
+        file: file);
+  }
+
+  void selectImage() async {
+    File? file = await pickImageFromGallery(context: context);
+
+    if (file != null) {
+      ref.read(chatControllerProvider).sendFileMessage(
+          context: context,
+          recieverUserId: widget.recieverUserId,
+          messageType: MessageEnum.image,
+          file: file);
     }
   }
 
@@ -83,7 +110,9 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      
+                    },
                     icon: Icon(
                       Icons.camera_alt,
                       color: Colors.grey,
