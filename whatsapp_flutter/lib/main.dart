@@ -9,7 +9,6 @@ import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/landing/screen/landing_screen.dart';
 import 'package:whatsapp_flutter/firebase_options.dart';
 import 'package:whatsapp_flutter/screens/mobile_layout_screen.dart';
-
 import 'package:whatsapp_flutter/utils/router.dart';
 
 void main() async {
@@ -57,6 +56,6 @@ class MyApp extends ConsumerWidget {
 }
 
 
-// 5 : 36
+// 6:23
 //8484848484 - otp -123456  
 //8607749965 - 123456 

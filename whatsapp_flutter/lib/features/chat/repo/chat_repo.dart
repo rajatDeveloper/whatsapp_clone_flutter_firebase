@@ -175,7 +175,6 @@ class ChatRepo {
     });
   }
 
-
   void sendFileMessage({
     required BuildContext context,
     required File file,
@@ -236,6 +235,46 @@ class ChatRepo {
           messageType: messageType);
     } catch (e) {
       showSnakBar(context: context, message: e.toString());
+    }
+  }
+
+  void sendGifMsg({
+    required BuildContext context,
+    required String gifUrl,
+    required String recieverUserId,
+    required UserModel senderUser,
+  }) async {
+    try {
+      log("poiynt - -1");
+      var timeSent = DateTime.now();
+      UserModel recieverUserData;
+
+      var userDataMap =
+          await firestore.collection('users').doc(recieverUserId).get();
+
+      recieverUserData = UserModel.fromMap(userDataMap.data()!);
+      log("poiynt - 0");
+      _saveDataToContactSubCollection(
+          senderUserData: senderUser,
+          recieverUserData: recieverUserData,
+          text: 'GIF',
+          timesent: timeSent,
+          recieverUserId: recieverUserId);
+
+      var messageId = const Uuid().v1();
+      _saveMessageToMessageSubCollection(
+          recieverUserId: recieverUserId,
+          text: gifUrl,
+          timesent: timeSent,
+          messageId: messageId,
+          recieverUsername: recieverUserData.name,
+          username: senderUser.name,
+          messageType: MessageEnum.gif);
+    } catch (e) {
+      showSnakBar(
+        context: context,
+        message: e.toString(),
+      );
     }
   }
 }

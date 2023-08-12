@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
+import 'package:whatsapp_flutter/common/widgets/video_player.dart';
 
 class ImageTextGifCard extends StatelessWidget {
   const ImageTextGifCard({
@@ -26,6 +30,13 @@ class ImageTextGifCard extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               )
-            : Container();
+            : messageType == MessageEnum.video
+                ? VideoPlayerCachedItem(url: message)
+                : messageType == MessageEnum.gif
+                    ? CachedNetworkImage(
+                        imageUrl: message,
+                        fit: BoxFit.contain,
+                      )
+                    : Container();
   }
 }
