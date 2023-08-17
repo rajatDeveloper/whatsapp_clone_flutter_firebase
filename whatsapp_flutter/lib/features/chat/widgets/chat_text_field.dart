@@ -1,11 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:whatsapp_flutter/colors.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:whatsapp_flutter/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_flutter/utils/functions.dart';
 import 'package:whatsapp_flutter/utils/utils.dart';
@@ -26,6 +30,28 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
   final TextEditingController _messageController = TextEditingController();
 
   bool isShowEmojiContainer = false;
+  FlutterSoundRecorder? _soundRecorder;
+  bool isRecoderInit = false;
+  bool isRecording = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _soundRecorder = FlutterSoundRecorder();
+    openAudio();
+  }
+
+  void openAudio() async {
+    final status = await Permission.microphone.request();
+
+    if (status != PermissionStatus.granted) {
+      showSnakBar(context: context, message: "Permission not granted !");
+    } else {
+      await _soundRecorder!.openRecorder();
+      isRecoderInit = true;
+    }
+  }
 
   void sendTextMessage() async {
     if (isShowSendBtn) {
@@ -36,6 +62,25 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
           );
       setState(() {
         _messageController.text = '';
+      });
+    } else {
+      //logic for recoiding file
+      var tempDir = await getTemporaryDirectory();
+      var filePath = '${tempDir.path}/flutter_sound_example.aac';
+      if (isRecoderInit == false) {
+        return;
+      }
+
+      if (isRecording) {
+        await _soundRecorder!.stopRecorder();
+      } else {
+        await _soundRecorder!.startRecorder(
+          toFile: filePath,
+        );
+      }
+
+      setState(() {
+        isRecording = !isRecording;
       });
     }
   }
@@ -79,8 +124,6 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     GiphyGif? file = await pickGiF(context: context);
 
     if (file != null) {
-
-
       ref.read(chatControllerProvider).sendGIfMessage(
           context: context,
           gifUrl: file.url,
@@ -93,6 +136,8 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     // TODO: implement dispose
     super.dispose();
     _messageController.dispose();
+    _soundRecorder!.closeRecorder();
+    isRecoderInit = false;
   }
 
   void showEmojiContainer() {
@@ -218,7 +263,11 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
                   sendTextMessage();
                 },
                 child: Icon(
-                  isShowSendBtn ? Icons.send : Icons.mic,
+                  isShowSendBtn
+                      ? Icons.send
+                      : isRecording
+                          ? Icons.close
+                          : Icons.mic,
                   color: Colors.white,
                 ),
               ),
