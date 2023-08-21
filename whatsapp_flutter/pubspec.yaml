@@ -51,6 +51,7 @@ dependencies:
   enough_giphy_flutter: ^0.4.0
   permission_handler: ^10.4.3
   path_provider: ^2.1.0
+  audioplayers: ^5.1.0
 
 dev_dependencies:
   flutter_test:

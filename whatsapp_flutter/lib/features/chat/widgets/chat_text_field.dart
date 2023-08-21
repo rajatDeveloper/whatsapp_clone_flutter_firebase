@@ -10,7 +10,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:whatsapp_flutter/colors.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:whatsapp_flutter/common/provider/message_reply_provider.dart';
 import 'package:whatsapp_flutter/features/chat/controller/chat_controller.dart';
+import 'package:whatsapp_flutter/features/chat/widgets/message_reply_preview.dart';
 import 'package:whatsapp_flutter/utils/functions.dart';
 import 'package:whatsapp_flutter/utils/utils.dart';
 
@@ -53,38 +55,6 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     }
   }
 
-  void sendTextMessage() async {
-    if (isShowSendBtn) {
-      ref.read(chatControllerProvider).sendTextMessage(
-            context: context,
-            text: _messageController.text,
-            recieverUserId: widget.recieverUserId,
-          );
-      setState(() {
-        _messageController.text = '';
-      });
-    } else {
-      //logic for recoiding file
-      var tempDir = await getTemporaryDirectory();
-      var filePath = '${tempDir.path}/flutter_sound_example.aac';
-      if (isRecoderInit == false) {
-        return;
-      }
-
-      if (isRecording) {
-        await _soundRecorder!.stopRecorder();
-      } else {
-        await _soundRecorder!.startRecorder(
-          toFile: filePath,
-        );
-      }
-
-      setState(() {
-        isRecording = !isRecording;
-      });
-    }
-  }
-
   void selectFile({
     required File file,
     required MessageEnum messageType,
@@ -92,7 +62,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     ref.read(chatControllerProvider).sendFileMessage(
         context: context,
         recieverUserId: widget.recieverUserId,
-        messageType: MessageEnum.image,
+        messageType: messageType,
         file: file);
   }
 
@@ -128,6 +98,39 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
           context: context,
           gifUrl: file.url,
           recieverUserId: widget.recieverUserId);
+    }
+  }
+
+  void sendTextMessage() async {
+    if (isShowSendBtn) {
+      ref.read(chatControllerProvider).sendTextMessage(
+            context: context,
+            text: _messageController.text,
+            recieverUserId: widget.recieverUserId,
+          );
+      setState(() {
+        _messageController.text = '';
+      });
+    } else {
+      //logic for recoiding file
+      var tempDir = await getTemporaryDirectory();
+      var filePath = '${tempDir.path}/flutter_sound_example.aac';
+      if (isRecoderInit == false) {
+        return;
+      }
+
+      if (isRecording) {
+        await _soundRecorder!.stopRecorder();
+        selectFile(file: File(filePath), messageType: MessageEnum.audio);
+      } else {
+        await _soundRecorder!.startRecorder(
+          toFile: filePath,
+        );
+      }
+
+      setState(() {
+        isRecording = !isRecording;
+      });
     }
   }
 
@@ -174,8 +177,16 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final messageReply = ref.watch(messageReplyProvider);
+
+    final isShowMessageReply = messageReply != null;
     return Column(
       children: [
+        isShowMessageReply
+            ? const MessageReplyPreview()
+            : const SizedBox(
+            
+              ),
         Row(children: [
           SizedBox(
             width: getDeviceWidth(context) * 0.82,

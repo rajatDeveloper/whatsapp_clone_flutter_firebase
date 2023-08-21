@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
 
 class Message {
@@ -8,8 +10,14 @@ class Message {
   final DateTime timeSent;
   final String messageId;
   final bool isSeen;
+  final String repiledMessage;
+  final String repiledTo;
+  final MessageEnum repiledMessageType;
 
   Message({
+    required this.repiledMessage,
+    required this.repiledTo,
+    required this.repiledMessageType,
     required this.senderId,
     required this.recieverid,
     required this.text,
@@ -28,6 +36,9 @@ class Message {
       'timeSent': timeSent.millisecondsSinceEpoch,
       'messageId': messageId,
       'isSeen': isSeen,
+      'repiledMessage': repiledMessage,
+      'repiledTo': repiledTo,
+      'repiledMessageType': repiledMessageType.type,
     };
   }
 
@@ -40,6 +51,14 @@ class Message {
       timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
       messageId: map['messageId'] ?? '',
       isSeen: map['isSeen'] ?? false,
+      repiledMessage: map['repiledMessage'] ?? '',
+      repiledTo: map['repiledTo'] ?? '',
+      repiledMessageType: (map['repiledMessageType'] as String).toEnum(),
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory Message.fromJson(String source) =>
+      Message.fromMap(json.decode(source));
 }

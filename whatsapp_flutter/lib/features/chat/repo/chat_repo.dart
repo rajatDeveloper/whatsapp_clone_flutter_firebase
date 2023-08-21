@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
+import 'package:whatsapp_flutter/common/provider/message_reply_provider.dart';
 import 'package:whatsapp_flutter/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/models/chat_contact.dart';
@@ -68,22 +69,35 @@ class ChatRepo {
     log('point - 3');
   }
 
-  _saveMessageToMessageSubCollection(
-      {required String recieverUserId,
-      required String text,
-      required DateTime timesent,
-      required String messageId,
-      required String recieverUsername,
-      required String username,
-      required MessageEnum messageType}) async {
+  _saveMessageToMessageSubCollection({
+    required String recieverUserId,
+    required String text,
+    required DateTime timesent,
+    required String messageId,
+    required String recieverUsername,
+    required String username,
+    required MessageEnum messageType,
+    required MessageReply? messageReply,
+    required String senderUserName,
+    required String recieverUserName,
+  }) async {
     var message = Message(
-        senderId: auth.currentUser!.uid,
-        recieverid: recieverUserId,
-        text: text,
-        type: messageType,
-        timeSent: timesent,
-        messageId: messageId,
-        isSeen: false);
+      senderId: auth.currentUser!.uid,
+      recieverid: recieverUserId,
+      text: text,
+      type: messageType,
+      timeSent: timesent,
+      messageId: messageId,
+      isSeen: false,
+      repiledMessage: messageReply == null ? "" : messageReply.message,
+      repiledTo: messageReply == null
+          ? ""
+          : messageReply.isMe
+              ? senderUserName
+              : recieverUserName,
+      repiledMessageType:
+          messageReply == null ? MessageEnum.text : messageReply.messageEnum,
+    );
 
     await firestore
         .collection('users')
@@ -105,12 +119,12 @@ class ChatRepo {
   }
 
   //get all chats
-  void sendtextMsg({
-    required BuildContext context,
-    required String text,
-    required String recieverUserId,
-    required UserModel senderUser,
-  }) async {
+  void sendtextMsg(
+      {required BuildContext context,
+      required String text,
+      required String recieverUserId,
+      required UserModel senderUser,
+      required MessageReply? messageReply}) async {
     try {
       log("poiynt - -1");
       var timeSent = DateTime.now();
@@ -130,13 +144,17 @@ class ChatRepo {
 
       var messageId = const Uuid().v1();
       _saveMessageToMessageSubCollection(
-          recieverUserId: recieverUserId,
-          text: text,
-          timesent: timeSent,
-          messageId: messageId,
-          recieverUsername: recieverUserData.name,
-          username: senderUser.name,
-          messageType: MessageEnum.text);
+        recieverUserId: recieverUserId,
+        text: text,
+        timesent: timeSent,
+        messageId: messageId,
+        recieverUsername: recieverUserData.name,
+        username: senderUser.name,
+        messageType: MessageEnum.text,
+        messageReply: messageReply,
+        recieverUserName: recieverUserData.name,
+        senderUserName: senderUser.name,
+      );
     } catch (e) {
       showSnakBar(
         context: context,
@@ -182,6 +200,7 @@ class ChatRepo {
     required UserModel senderUserData,
     required ProviderRef ref, // can call fireatire provider functions
     required MessageEnum messageType,
+    required MessageReply? messageReply,
   }) async {
     try {
       var timeSent = DateTime.now();
@@ -226,13 +245,17 @@ class ChatRepo {
           recieverUserId: recieverUserId);
 
       _saveMessageToMessageSubCollection(
-          recieverUserId: recieverUserId,
-          text: imageUrl,
-          timesent: timeSent,
-          messageId: messageId,
-          recieverUsername: recieverUserData.name,
-          username: senderUserData.name,
-          messageType: messageType);
+        recieverUserId: recieverUserId,
+        text: imageUrl,
+        timesent: timeSent,
+        messageId: messageId,
+        recieverUsername: recieverUserData.name,
+        username: senderUserData.name,
+        messageType: messageType,
+        messageReply: messageReply,
+        recieverUserName: recieverUserData.name,
+        senderUserName: senderUserData.name,
+      );
     } catch (e) {
       showSnakBar(context: context, message: e.toString());
     }
@@ -243,6 +266,7 @@ class ChatRepo {
     required String gifUrl,
     required String recieverUserId,
     required UserModel senderUser,
+    required MessageReply? messageReply,
   }) async {
     try {
       log("poiynt - -1");
@@ -263,13 +287,17 @@ class ChatRepo {
 
       var messageId = const Uuid().v1();
       _saveMessageToMessageSubCollection(
-          recieverUserId: recieverUserId,
-          text: gifUrl,
-          timesent: timeSent,
-          messageId: messageId,
-          recieverUsername: recieverUserData.name,
-          username: senderUser.name,
-          messageType: MessageEnum.gif);
+        recieverUserId: recieverUserId,
+        text: gifUrl,
+        timesent: timeSent,
+        messageId: messageId,
+        recieverUsername: recieverUserData.name,
+        username: senderUser.name,
+        messageType: MessageEnum.gif,
+        messageReply: messageReply,
+        recieverUserName: recieverUserData.name,
+        senderUserName: senderUser.name,
+      );
     } catch (e) {
       showSnakBar(
         context: context,
