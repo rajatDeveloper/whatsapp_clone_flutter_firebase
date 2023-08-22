@@ -305,4 +305,32 @@ class ChatRepo {
       );
     }
   }
+
+  void setChatMessageSeen({
+    required BuildContext context,
+    required String recieverUserId,
+    required String messageId,
+  }) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('chats')
+          .doc(recieverUserId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+
+      await firestore
+          .collection('users')
+          .doc(recieverUserId)
+          .collection('chats')
+          .doc(auth.currentUser!.uid)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen': true});
+    } catch (e) {
+      showSnakBar(context: context, message: e.toString());
+    }
+  }
 }

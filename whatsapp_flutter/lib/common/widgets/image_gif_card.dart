@@ -27,15 +27,13 @@ class ImageTextGifCard extends StatelessWidget {
             style: const TextStyle(fontSize: 16),
           )
         : messageType == MessageEnum.image
-            ? Text(message)
-
-            // Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: CachedNetworkImage(
-            //       imageUrl: message,
-            //       fit: BoxFit.contain,
-            //     ),
-            //   )
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CachedNetworkImage(
+                  imageUrl: message,
+                  fit: BoxFit.contain,
+                ),
+              )
             : messageType == MessageEnum.audio
                 ? StatefulBuilder(builder: (context, setState) {
                     return IconButton(

@@ -182,11 +182,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     final isShowMessageReply = messageReply != null;
     return Column(
       children: [
-        isShowMessageReply
-            ? const MessageReplyPreview()
-            : const SizedBox(
-            
-              ),
+        isShowMessageReply ? const MessageReplyPreview() : const SizedBox(),
         Row(children: [
           SizedBox(
             width: getDeviceWidth(context) * 0.82,
