@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cached_video_player/cached_video_player.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/common/enums/messages_enum.dart';
 import 'package:whatsapp_flutter/common/widgets/video_player.dart';
@@ -29,8 +29,8 @@ class ImageTextGifCard extends StatelessWidget {
         : messageType == MessageEnum.image
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CachedNetworkImage(
-                  imageUrl: message,
+                child: Image.network(
+                  message,
                   fit: BoxFit.contain,
                 ),
               )
@@ -57,8 +57,8 @@ class ImageTextGifCard extends StatelessWidget {
                 : messageType == MessageEnum.video
                     ? VideoPlayerCachedItem(url: message)
                     : messageType == MessageEnum.gif
-                        ? CachedNetworkImage(
-                            imageUrl: message,
+                        ? Image.network(
+                            message,
                             fit: BoxFit.contain,
                           )
                         : Container();

@@ -306,12 +306,15 @@ class ChatRepo {
     }
   }
 
+
+
   void setChatMessageSeen({
     required BuildContext context,
     required String recieverUserId,
     required String messageId,
   }) async {
     try {
+      
       await firestore
           .collection('users')
           .doc(auth.currentUser!.uid)
@@ -333,4 +336,7 @@ class ChatRepo {
       showSnakBar(context: context, message: e.toString());
     }
   }
+
+
+
 }

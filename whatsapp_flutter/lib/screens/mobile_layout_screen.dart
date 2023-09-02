@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_flutter/features/chat/screen/contacts_list.dart';
+import 'package:whatsapp_flutter/features/status/screens/status_conform_screen.dart';
+import 'package:whatsapp_flutter/features/status/screens/status_contact_screen.dart';
+import 'package:whatsapp_flutter/utils/utils.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   const MobileLayoutScreen({Key? key}) : super(key: key);
@@ -13,12 +18,13 @@ class MobileLayoutScreen extends ConsumerStatefulWidget {
 }
 
 class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  late TabController tabController;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -31,8 +37,8 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
-    //to update the online and offline 
-    
+    //to update the online and offline
+
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       ref.read(authControllerProvider).setUserState(true);
@@ -70,15 +76,16 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               onPressed: () {},
             ),
           ],
-          bottom: const TabBar(
+          bottom: TabBar(
+            controller: tabController,
             indicatorColor: tabColor,
             indicatorWeight: 4,
             labelColor: tabColor,
             unselectedLabelColor: Colors.grey,
-            labelStyle: TextStyle(
+            labelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
-            tabs: [
+            tabs: const [
               Tab(
                 text: 'CHATS',
               ),
@@ -91,14 +98,32 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             ],
           ),
         ),
-        body: const ContactsList(),
+        body: TabBarView(
+          controller: tabController,
+          children: const [
+            ContactsList(),
+            StatusContactScreen(),
+            Center(
+              child: Text("Calls "),
+            )
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, ContactScreen.routeName);
+          onPressed: () async {
+            if (tabController.index == 0) {
+              Navigator.pushNamed(context, ContactScreen.routeName);
+            } else {
+              File? pickedImage = await pickImageFromGallery(context: context);
+
+              if (pickedImage != null) {
+                Navigator.pushNamed(context, ConfromStatusScreen.routeName,
+                    arguments: pickedImage);
+              }
+            }
           },
           backgroundColor: tabColor,
-          child: const Icon(
-            Icons.comment,
+          child: Icon(
+            tabController.index == 0 ? Icons.comment : Icons.add_a_photo,
             color: Colors.white,
           ),
         ),

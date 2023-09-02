@@ -13,17 +13,19 @@ class MyMessageCard extends StatelessWidget {
   final String repliedText;
   final String username;
   final MessageEnum repiedMessageType;
+  final bool isSeen;
 
-  const MyMessageCard({
-    Key? key,
-    required this.message,
-    required this.date,
-    required this.messageType,
-    required this.username,
-    required this.repiedMessageType,
-    required this.onLeftSwipe,
-    required this.repliedText,
-  }) : super(key: key);
+  const MyMessageCard(
+      {Key? key,
+      required this.message,
+      required this.date,
+      required this.messageType,
+      required this.username,
+      required this.repiedMessageType,
+      required this.onLeftSwipe,
+      required this.repliedText,
+      required this.isSeen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +103,10 @@ class MyMessageCard extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      const Icon(
-                        Icons.done_all,
+                      Icon(
+                        isSeen ? Icons.done_all : Icons.done,
                         size: 20,
-                        color: Colors.white60,
+                        color: isSeen ? Colors.blue : Colors.white60,
                       ),
                     ],
                   ),

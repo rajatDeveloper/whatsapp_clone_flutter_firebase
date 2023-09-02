@@ -12,7 +12,7 @@ import 'package:whatsapp_flutter/models/chat_contact.dart';
 import 'package:whatsapp_flutter/models/message.dart';
 import 'package:whatsapp_flutter/models/userModel.dart';
 
-final chatControllerProvider = Provider.autoDispose(
+final chatControllerProvider = Provider(
   (ref) => ChatController(
     chatRepo: ref.watch(chatRepoProvider),
     ref: ref,

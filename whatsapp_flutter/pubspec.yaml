@@ -44,7 +44,7 @@ dependencies:
   flutter_contacts: ^1.1.6
   uuid: ^3.0.7
   intl: ^0.18.1
-  cached_network_image: ^3.2.3
+  # cached_network_image: ^3.2.3
   cached_video_player: ^2.0.4
   emoji_picker_flutter: ^1.6.1
   flutter_sound: ^9.2.13
@@ -53,6 +53,7 @@ dependencies:
   path_provider: ^2.1.0
   audioplayers: ^5.1.0
   swipe_to: ^1.0.2
+  # story_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/common/widgets/error.dart';
 import 'package:whatsapp_flutter/features/auth/screen/login_screen.dart';
@@ -5,6 +7,9 @@ import 'package:whatsapp_flutter/features/auth/screen/otp_screen.dart';
 import 'package:whatsapp_flutter/features/auth/screen/user_info_screen.dart';
 import 'package:whatsapp_flutter/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_flutter/features/chat/screen/mobile_chat_screen.dart';
+import 'package:whatsapp_flutter/features/status/screens/status_conform_screen.dart';
+import 'package:whatsapp_flutter/features/status/screens/status_screen.dart';
+import 'package:whatsapp_flutter/models/status_model.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -36,6 +41,22 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (_) => MobileChatScreen(name: name, uid: uid),
       );
+
+    case ConfromStatusScreen.routeName:
+      final arg = routeSettings.arguments as File;
+      return MaterialPageRoute(
+        builder: (_) => ConfromStatusScreen(
+          file: arg,
+        ),
+      );
+    case StatusScreen.routeName:
+      final arg = routeSettings.arguments as Status;
+      return MaterialPageRoute(
+        builder: (_) => StatusScreen(
+          status: arg,
+        ),
+      );
+
     default:
       return MaterialPageRoute(
           builder: (_) => const ErrorScreen(error: "this route is not found"));
