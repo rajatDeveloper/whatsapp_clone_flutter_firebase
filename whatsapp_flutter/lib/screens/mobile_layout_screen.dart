@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
+import 'package:whatsapp_flutter/features/auth/group/screens/create_group_screen.dart';
 import 'package:whatsapp_flutter/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:whatsapp_flutter/features/chat/screen/contacts_list.dart';
 import 'package:whatsapp_flutter/features/status/screens/status_conform_screen.dart';
@@ -72,9 +73,16 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               onPressed: () {},
             ),
             PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                itemBuilder: (context) =>
-                    [PopupMenuItem(child: Text("Create group "))])
+              icon: Icon(Icons.more_vert),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text("Create group "),
+                  onTap: () {
+                    Navigator.pushNamed(context, CreateGroupScreen.routeName);
+                  },
+                )
+              ],
+            )
           ],
           bottom: TabBar(
             controller: tabController,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/common/widgets/error.dart';
+import 'package:whatsapp_flutter/features/auth/group/screens/create_group_screen.dart';
 import 'package:whatsapp_flutter/features/auth/screen/login_screen.dart';
 import 'package:whatsapp_flutter/features/auth/screen/otp_screen.dart';
 import 'package:whatsapp_flutter/features/auth/screen/user_info_screen.dart';
@@ -56,7 +57,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           status: arg,
         ),
       );
-
+    case CreateGroupScreen.routeName:
+      // final arg = routeSettings.arguments as Status;
+      return MaterialPageRoute(
+        builder: (_) => CreateGroupScreen(),
+      );
     default:
       return MaterialPageRoute(
           builder: (_) => const ErrorScreen(error: "this route is not found"));
