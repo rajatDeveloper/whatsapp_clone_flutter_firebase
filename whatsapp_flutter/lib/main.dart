@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_flutter/colors.dart';
-
 import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/common/widgets/error.dart';
 import 'package:whatsapp_flutter/common/widgets/loder.dart';
@@ -17,7 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

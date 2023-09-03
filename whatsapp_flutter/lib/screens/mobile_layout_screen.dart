@@ -71,10 +71,10 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               icon: const Icon(Icons.search, color: Colors.grey),
               onPressed: () {},
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: Colors.grey),
-              onPressed: () {},
-            ),
+            PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (context) =>
+                    [PopupMenuItem(child: Text("Create group "))])
           ],
           bottom: TabBar(
             controller: tabController,
