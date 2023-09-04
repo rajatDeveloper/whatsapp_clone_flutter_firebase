@@ -31,7 +31,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           groupName: _groupNameController.text.trim(),
           groupPic: image!,
           selectedContacts: ref.read(selectedContactGroups));
-
+      ref.read(selectedContactGroups.state).update((state) => []);
       Navigator.pop(context);
     } else {
       showSnakBar(
@@ -59,58 +59,60 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         },
         child: const Icon(Icons.done),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Stack(
-            children: [
-              image == null
-                  ? const CircleAvatar(
-                      radius: 64,
-                      backgroundImage: NetworkImage(
-                          "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"),
-                    )
-                  : CircleAvatar(
-                      radius: 64,
-                      backgroundImage: FileImage(image!),
-                    ),
-              Positioned(
-                bottom: -10,
-                left: 80,
-                child: IconButton(
-                  onPressed: () {
-                    selectImage();
-                  },
-                  icon: const Icon(Icons.camera_alt),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Stack(
+              children: [
+                image == null
+                    ? const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                            "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"),
+                      )
+                    : CircleAvatar(
+                        radius: 64,
+                        backgroundImage: FileImage(image!),
+                      ),
+                Positioned(
+                  bottom: -10,
+                  left: 80,
+                  child: IconButton(
+                    onPressed: () {
+                      selectImage();
+                    },
+                    icon: const Icon(Icons.camera_alt),
+                  ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _groupNameController,
+                decoration: const InputDecoration(
+                  hintText: 'Group Name',
                 ),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _groupNameController,
-              decoration: const InputDecoration(
-                hintText: 'Group Name',
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Select Participants",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: getFontSize(16, getDeviceWidth(context))),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Select Participants",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: getFontSize(16, getDeviceWidth(context))),
+                ),
               ),
             ),
-          ),
-          SelectContactGroup()
-        ],
+            SelectContactGroup()
+          ],
+        ),
       ),
     );
   }

@@ -42,7 +42,7 @@ class GroupRepo {
             )
             .get();
 
-        if (usersCollection.docs[0].exists) {
+        if (usersCollection.docs.isNotEmpty && usersCollection.docs[0].exists) {
           uids.add(usersCollection.docs[0].data()['uid']);
         }
       }

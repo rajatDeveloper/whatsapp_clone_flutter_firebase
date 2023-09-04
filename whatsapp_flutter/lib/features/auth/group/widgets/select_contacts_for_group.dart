@@ -33,32 +33,34 @@ class _SelectContactGroupState extends ConsumerState<SelectContactGroup> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(getConatactsProvider).when(
-        data: (contactList) => Expanded(
-            child: ListView.builder(
-                itemCount: contactList.length,
-                itemBuilder: (context, index) {
-                  final contact = contactList[index];
-                  return InkWell(
-                      onTap: () => selectContact(index, contact),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 7),
-                        child: ListTile(
-                            title: Text(
-                              contact.displayName,
-                              style: TextStyle(
-                                  fontSize:
-                                      getFontSize(17, getDeviceWidth(context))),
-                            ),
-                            leading: selectedContactIndex.contains(index)
-                                ? const CircleAvatar(
-                                    child: Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : null),
-                      ));
-                })),
+        data: (contactList) => SizedBox(
+              height: getDeviceHeight(context) * 0.6,
+              child: ListView.builder(
+                  itemCount: contactList.length,
+                  itemBuilder: (context, index) {
+                    final contact = contactList[index];
+                    return InkWell(
+                        onTap: () => selectContact(index, contact),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 7),
+                          child: ListTile(
+                              title: Text(
+                                contact.displayName,
+                                style: TextStyle(
+                                    fontSize: getFontSize(
+                                        17, getDeviceWidth(context))),
+                              ),
+                              leading: selectedContactIndex.contains(index)
+                                  ? const CircleAvatar(
+                                      child: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : null),
+                        ));
+                  }),
+            ),
         error: (err, trace) => Container(),
         loading: () => const Loder());
   }
