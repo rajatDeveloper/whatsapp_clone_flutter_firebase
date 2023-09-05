@@ -18,8 +18,10 @@ import 'package:whatsapp_flutter/utils/utils.dart';
 
 class ChatTextField extends ConsumerStatefulWidget {
   final String recieverUserId;
+  final bool isGroupChat;
   const ChatTextField({
     required this.recieverUserId,
+    required this.isGroupChat,
     super.key,
   });
 
@@ -60,6 +62,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
     required MessageEnum messageType,
   }) async {
     ref.read(chatControllerProvider).sendFileMessage(
+        isGroupChat: widget.isGroupChat,
         context: context,
         recieverUserId: widget.recieverUserId,
         messageType: messageType,
@@ -71,6 +74,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
 
     if (file != null) {
       ref.read(chatControllerProvider).sendFileMessage(
+          isGroupChat: widget.isGroupChat,
           context: context,
           recieverUserId: widget.recieverUserId,
           messageType: MessageEnum.image,
@@ -83,6 +87,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
 
     if (file != null) {
       ref.read(chatControllerProvider).sendFileMessage(
+          isGroupChat: widget.isGroupChat,
           context: context,
           recieverUserId: widget.recieverUserId,
           messageType: MessageEnum.video,
@@ -95,6 +100,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
 
     if (file != null) {
       ref.read(chatControllerProvider).sendGIfMessage(
+          isGroupChat: widget.isGroupChat,
           context: context,
           gifUrl: file.url,
           recieverUserId: widget.recieverUserId);
@@ -104,6 +110,7 @@ class _ChatTextFieldState extends ConsumerState<ChatTextField> {
   void sendTextMessage() async {
     if (isShowSendBtn) {
       ref.read(chatControllerProvider).sendTextMessage(
+            isGroupChat: widget.isGroupChat,
             context: context,
             text: _messageController.text,
             recieverUserId: widget.recieverUserId,

@@ -110,7 +110,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 ),
               ),
             ),
-            SelectContactGroup()
+            SizedBox(
+                height: getDeviceHeight(context) * 0.7,
+                child: const SelectContactGroup())
           ],
         ),
       ),

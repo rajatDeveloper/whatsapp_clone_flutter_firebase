@@ -52,6 +52,7 @@ class GroupRepo {
           .storeFileToFirebase('/group/$groupId', groupPic);
 
       model.Group group = model.Group(
+        timeSent: DateTime.now(),
         senderId: auth.currentUser!.uid,
         name: groupName,
         groupId: groupId,

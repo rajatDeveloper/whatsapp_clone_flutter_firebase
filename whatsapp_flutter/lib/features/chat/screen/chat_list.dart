@@ -14,7 +14,10 @@ import 'package:whatsapp_flutter/models/message.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;
-  const ChatList({Key? key, required this.recieverUserId}) : super(key: key);
+  final bool isGroupChat;
+  const ChatList(
+      {Key? key, required this.isGroupChat, required this.recieverUserId})
+      : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatListState();
@@ -42,9 +45,13 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Message>>(
-        stream: ref.watch(chatControllerProvider).getChatStream(
-              recieverUserId: widget.recieverUserId,
-            ),
+        stream: widget.isGroupChat
+            ? ref.watch(chatControllerProvider).getGroupStream(
+                  groupId: widget.recieverUserId,
+                )
+            : ref.watch(chatControllerProvider).getChatStream(
+                  recieverUserId: widget.recieverUserId,
+                ),
         builder: (context, snapshot) {
           // log(snapshot.data!.length.toString());
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -78,21 +85,20 @@ class _ChatListState extends ConsumerState<ChatList> {
               if (messageData.senderId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return MyMessageCard(
-                  messageType: messageData.type,
-                  message: messageData.text,
-                  date: timeSent,
-                  repliedText: messageData.repiledMessage,
-                  username: messageData.repiledTo,
-                  repiedMessageType: messageData.repiledMessageType,
-                  onLeftSwipe: () {
-                    onMessageSwip(
-                      message: messageData.text,
-                      isMe: true,
-                      messageEnum: messageData.type,
-                    );
-                  },
-                isSeen : messageData.isSeen
-                );
+                    messageType: messageData.type,
+                    message: messageData.text,
+                    date: timeSent,
+                    repliedText: messageData.repiledMessage,
+                    username: messageData.repiledTo,
+                    repiedMessageType: messageData.repiledMessageType,
+                    onLeftSwipe: () {
+                      onMessageSwip(
+                        message: messageData.text,
+                        isMe: true,
+                        messageEnum: messageData.type,
+                      );
+                    },
+                    isSeen: messageData.isSeen);
               }
               return SenderMessageCard(
                 messageType: messageData.type,

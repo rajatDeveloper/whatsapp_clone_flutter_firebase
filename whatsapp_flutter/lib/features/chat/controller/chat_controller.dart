@@ -9,6 +9,7 @@ import 'package:whatsapp_flutter/common/utils/myData.dart';
 import 'package:whatsapp_flutter/features/auth/controller/authController.dart';
 import 'package:whatsapp_flutter/features/chat/repo/chat_repo.dart';
 import 'package:whatsapp_flutter/models/chat_contact.dart';
+import 'package:whatsapp_flutter/models/group.dart';
 import 'package:whatsapp_flutter/models/message.dart';
 import 'package:whatsapp_flutter/models/userModel.dart';
 
@@ -28,13 +29,14 @@ class ChatController {
     required this.ref,
   });
 
-  void sendTextMessage({
-    required BuildContext context,
-    required String text,
-    required String recieverUserId,
-  }) async {
+  void sendTextMessage(
+      {required BuildContext context,
+      required String text,
+      required String recieverUserId,
+      required bool isGroupChat}) async {
     final messageReply = ref.read(messageReplyProvider);
     chatRepo.sendtextMsg(
+        isGroupChat: isGroupChat,
         context: context,
         text: text,
         recieverUserId: recieverUserId,
@@ -48,20 +50,25 @@ class ChatController {
     return chatRepo.getChatList();
   }
 
+  Stream<List<Group>> getChatGroups() {
+    return chatRepo.getGroups();
+  }
+
   Stream<List<Message>> getChatStream({
     required String recieverUserId,
   }) {
     return chatRepo.getChatStream(recieverUserId: recieverUserId);
   }
 
-  void sendFileMessage({
-    required BuildContext context,
-    required String recieverUserId,
-    required MessageEnum messageType,
-    required File file,
-  }) async {
+  void sendFileMessage(
+      {required BuildContext context,
+      required String recieverUserId,
+      required MessageEnum messageType,
+      required File file,
+      required bool isGroupChat}) async {
     final messageReply = ref.read(messageReplyProvider);
     chatRepo.sendFileMessage(
+        isGroupChat: isGroupChat,
         messageReply: messageReply,
         context: context,
         file: file,
@@ -72,16 +79,17 @@ class ChatController {
     ref.read(messageReplyProvider.state).update((state) => null);
   }
 
-  void sendGIfMessage({
-    required BuildContext context,
-    required String gifUrl,
-    required String recieverUserId,
-  }) async {
+  void sendGIfMessage(
+      {required BuildContext context,
+      required String gifUrl,
+      required String recieverUserId,
+      required bool isGroupChat}) async {
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
     String newgifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
     final messageReply = ref.read(messageReplyProvider);
     chatRepo.sendGifMsg(
+        isGroupChat: isGroupChat,
         messageReply: messageReply,
         context: context,
         gifUrl: newgifUrl,
@@ -97,5 +105,11 @@ class ChatController {
   }) {
     chatRepo.setChatMessageSeen(
         context: context, recieverUserId: recieverUserId, messageId: messageId);
+  }
+
+  Stream<List<Message>> getGroupStream({
+    required String groupId,
+  }) {
+    return chatRepo.getGroupChatStream(groupId: groupId);
   }
 }

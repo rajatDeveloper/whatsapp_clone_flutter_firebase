@@ -5,10 +5,8 @@ class Loder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Error"),
-      ),
+    return Center(
+      child: Text("Error"),
     );
   }
 }
